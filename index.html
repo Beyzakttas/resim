@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrawMind AI Analiz Projesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="min-h-screen flex flex-col pt-16 bg-gradient-to-b from-gray-50 to-blue-50">
+
+    <!-- Navigation (Görsel iyileştirme) -->
+    <nav class="fixed w-full top-0 bg-gradient-to-r from-indigo-600 to-purple-700 shadow-2xl z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 text-white font-bold text-xl tracking-wide flex items-center gap-2">
+                    <span class="text-2xl">🧠</span>
+                    <span>DrawMind AI Analiz</span>
+                </div>
+                <button id="loginToggle" onclick="resetApp()"
+                    class="flex items-center gap-2 text-white hover:bg-white/10 px-5 py-2 rounded-lg transition-all duration-500 text-sm font-medium">
+                    <span class="hidden sm:inline">Giriş yap</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContainer" class="flex-grow flex items-center justify-center p-4">
+
+        <!-- Login View (Görsel iyileştirme) -->
+        <div id="loginView"
+            class="hidden w-full max-w-md mx-auto my-auto bg-white rounded-2xl shadow-2xl border border-indigo-100 overflow-hidden">
+            <div class="p-8">
+                <div class="text-center mb-8">
+
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">
+                        DrawMind AI'ya Hoş Geldiniz
+                    </h1>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Kullanıcı Adı</label>
+                        <div class="relative">
+                            <i
+                                class="lucide-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                            <input type="text" id="username" name="username" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Kullanıcı adınızı girin" autocomplete="username">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Şifre</label>
+                        <div class="relative">
+                            <i
+                                class="lucide-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                            <input type="password" id="password" name="password" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                                placeholder="Şifrenizi girin" autocomplete="current-password">
+                        </div>
+                    </div>
+
+                    <p id="loginMessage" class="text-red-600 text-sm hidden p-3 bg-red-50 rounded-lg"></p>
+
+                    <button type="submit"
+                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 ml-auto">
+                        <i class="lucide-log-in w-100 h-5"></i>
+                        Giriş Yap
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Home View (Görsel iyileştirme) -->
+        <div id="homeView" class="text-center max-w-3xl mx-auto my-auto">
+            <div class="mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                    Çizimlerinizin <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Psikolojik
+                        Analizi</span>
+                </h1>
+                <p class="text-lg text-gray-600 mb-8">
+                    Çizimlerinizi analiz eden ve 50 farklı duygusal/psikolojik duruma göre rapor sunan yapay zeka
+                    simülasyonu.
+                </p>
+            </div>
+
+            <button onclick="handleStartAnalysis()"
+                class="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-lg font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 mb-8">
+                <i class="lucide-pen-tool w-5 h-5"></i>
+                Çizim Analizine Başla
+            </button>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
+                <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                    <i class="lucide-brain w-8 h-8 text-indigo-600 mb-3 mx-auto"></i>
+                    <h3 class="font-semibold text-gray-800">AI Analiz</h3>
+                    <p class="text-sm text-gray-600 mt-1">Gelişmiş yapay zeka</p>
+                </div>
+                <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                    <i class="lucide-bar-chart w-8 h-8 text-purple-600 mb-3 mx-auto"></i>
+                    <h3 class="font-semibold text-gray-800">Detaylı Rapor</h3>
+                    <p class="text-sm text-gray-600 mt-1">Kapsamlı analiz</p>
+                </div>
+                <div class="p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                    <i class="lucide-shield w-8 h-8 text-green-600 mb-3 mx-auto"></i>
+                    <h3 class="font-semibold text-gray-800">Güvenli</h3>
+                    <p class="text-sm text-gray-600 mt-1">Verileriniz gizli</p>
+                </div>
+            </div>
+
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl max-w-xl mx-auto">
+                <div class="flex items-start gap-3">
+                    <i class="lucide-alert-triangle w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-amber-800 text-sm text-left">
+                        ⚠️ Bu proje bir simülasyon olmasına rağmen, sonuçları gerçek psikolojik analizden bağımsızdır.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drawing View (Görsel iyileştirme) -->
+        <div id="drawingView" class="hidden w-full max-w-5xl mx-auto flex flex-col items-center">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Çizim Alanı</h2>
+            </div>
+
+            <div id="drawingTools"
+                class="flex flex-wrap justify-center gap-3 p-4 bg-white rounded-xl shadow-lg border border-gray-200 mb-6">
+                <!-- Tools will be dynamically inserted here -->
+            </div>
+
+            <div id="canvasContainer"
+                class="w-full shadow-2xl rounded-2xl overflow-hidden border-4 border-indigo-200 bg-white relative">
+                <div id="loadingOverlay"
+                    class="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center z-10 hidden">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+                    <p class="text-white text-lg font-semibold">Analiz Ediliyor...</p>
+                </div>
+                <canvas id="drawingCanvas"></canvas>
+            </div>
+            <p class="mt-4 text-sm text-gray-500 text-center">
+                Çizim için farenizi basılı tutun veya dokunmatik ekranınızı kullanın.
+            </p>
+        </div>
+
+        <!-- Result View (Görsel iyileştirme) -->
+        <div id="resultView" class="hidden max-w-3xl mx-auto my-auto w-full">
+            <div class="text-center mb-8">
+                <h2 id="resultTitle" class="text-3xl font-bold text-gray-800 mb-2">AI Analiz Raporu</h2>
+                <p class="text-gray-600">Çiziminizin detaylı psikolojik analizi</p>
+            </div>
+
+            <div id="resultCard" class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 mb-8">
+                <!-- Results will be dynamically inserted here -->
+            </div>
+
+            <div class="text-center">
+                <button onclick="render('DRAWING')"
+                    class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                    <i class="lucide-pen-tool w-5 h-5"></i>
+                    Yeni Bir Çizim Yap
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Modal (Görsel iyileştirme) -->
+    <div id="alertModal"
+        class="fixed inset-0 z-50 flex justify-center items-center p-4 bg-black/50 backdrop-blur-sm hidden">
+        <div class="max-w-sm w-full transform transition-all duration-300" id="alertContent">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="lucide-octagon-alert w-6 h-6 text-red-500 flex-shrink-0"></i>
+                        <h3 class="text-lg font-bold text-gray-900" id="alertTitle">Uyarı</h3>
+                    </div>
+                    <p class="text-gray-600 mb-6" id="alertMessage">
+                        Bu alana erişmek için öncelikle giriş yapmanız gerekmektedir.
+                    </p>
+                    <div class="flex justify-end">
+                        <button onclick="closeAlert()"
+                            class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium rounded-lg transition-colors duration-200">
+                            Tamam
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Button (Görsel iyileştirme) -->
+    <button id="chatToggleButton" onclick="toggleChat()" class="fixed bottom-6 right-6 z-50 p-4 bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-full shadow-2xl 
+    hover:shadow-3xl transition-all duration-300 hover:scale-110 
+    focus:outline-none focus:ring-4 focus:ring-indigo-300" title="Sohbeti Aç">
+        <i class="lucide-message-circle w-6 h-6"></i>
+    </button>
+
+    <!-- Chat Window (Görsel iyileştirme) -->
+    <!-- Chat Window (Görsel iyileştirme) -->
+    <div id="chatWindow"
+        class="fixed bottom-20 right-6 z-50 w-full max-w-sm h-[450px] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-200 hidden">
+
+        <!-- Header -->
+        <div
+            class="p-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-t-xl flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="lucide-bot w-5 h-5 text-white"></i>
+                AI Asistan
+            </div>
+            <button onclick="toggleChat()" class="text-white hover:bg-white/20 transition duration-150 p-2 rounded-full"
+                title="Kapat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="w-4 h-4 text-white">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-gray-50 to-white"
+            style="max-height: 330px;">
+
+            <!-- Hoşgeldin mesajı -->
+            <div class="text-center py-8">
+                <div
+                    class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="lucide-bot text-indigo-600 w-8 h-8"></i>
+                </div>
+                <h4 class="font-bold text-gray-700">AI Asistan</h4>
+                <p class="text-sm text-gray-500 mt-1">Çizim analizi hakkında sorularınız için buradayım!</p>
+            </div>
+        </div>
+
+        <!-- Chat Input - HOVER'DA AYNI RENK -->
+        <div class="p-4 border-t border-gray-200 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-b-xl">
+            <div class="messageBox"
+                style="width: 100%; height: 40px; display: flex; align-items: center; justify-content: center; background-color: rgba(255, 255, 255, 0.1); padding: 0 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2);">
+
+                <!-- File Upload Button - HOVER'DA BEYAZ -->
+                <div class="fileUploadWrapper"
+                    style="width: fit-content; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <label for="file"
+                        style="cursor: pointer; width: fit-content; height: fit-content; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337" style="height: 18px;">
+                            <circle stroke-width="20" stroke="rgba(255, 255, 255, 0.8)" fill="none" r="158.5" cy="168.5"
+                                cx="168.5"></circle>
+                            <path stroke-linecap="round" stroke-width="25" stroke="rgba(255, 255, 255, 0.8)"
+                                d="M167.759 79V259"></path>
+                            <path stroke-linecap="round" stroke-width="25" stroke="rgba(255, 255, 255, 0.8)"
+                                d="M79 167.138H259"></path>
+                        </svg>
+                        <span class="tooltip"
+                            style="position: absolute; top: -40px; display: none; opacity: 0; color: white; font-size: 10px; white-space: nowrap; background-color: #374151; padding: 6px 10px; border: 1px solid #4b5563; border-radius: 5px; box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s;">
+                            Resim Ekle
+                        </span>
+                    </label>
+                    <input type="file" id="file" name="file" style="display: none;" />
+                </div>
+
+                <!-- Message Input -->
+                <input id="chatInput" required="" placeholder="Mesajınızı yazın..." type="text"
+                    style="width: 200px; height: 100%; background-color: transparent; outline: none; border: none; padding-left: 10px; color: white;"
+                    class="flex-1 placeholder-white/70" />
+
+                <!-- Send Button - HOVER'DA BEYAZ -->
+                <button id="chatSendButton" onclick="sendChatMessage()"
+                    style="width: fit-content; height: 100%; background-color: transparent; outline: none; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663" style="height: 18px;">
+                        <path fill="none"
+                            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888">
+                        </path>
+                        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="33.67"
+                            stroke="rgba(255, 255, 255, 0.8)"
+                            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- Footer (Görsel iyileştirme) -->
+    <footer class="w-full p-6 text-center text-gray-500 text-sm border-t bg-white mt-auto">
+        <div class="max-w-7xl mx-auto">
+            <p>DrawMind Bitirme Projesi &copy; 2024</p>
+            <p class="text-xs text-gray-400 mt-2">Bu proje akademik amaçlı bir simülasyondur.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- İkonların yüklenmesi için ek script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+
+</html>

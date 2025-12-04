@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrawMind AI Analiz Projesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="min-h-screen flex flex-col pt-16 bg-gray-50">
+
+    <nav class="fixed w-full top-0 bg-indigo-700 shadow-xl z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 text-white font-extrabold text-2xl tracking-wider">
+                    🧠 DrawMind AI Analiz
+                </div>
+                <button id="loginToggle" onclick="resetApp()"
+                    class="text-white hover:text-indigo-200 transition duration-150 p-2 rounded-lg text-sm font-medium">
+                    <i class="lucide-log-in mr-1"></i> Giriş Yap / Oturumu Kapat
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContainer" class="flex-grow flex items-center justify-center p-4">
+
+        <div id="loginView"
+            class="hidden text-center p-8 max-w-sm mx-auto my-auto bg-white rounded-xl shadow-2xl border border-indigo-100">
+            <i class="lucide-user-circle text-indigo-600 mb-4 mx-auto" style="width: 50px; height: 50px;"></i>
+            <h1 class="text-3xl font-extrabold text-gray-800 mb-6">
+                Giriş Yap
+            </h1>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4 text-left">
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Kullanıcı Adı</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="Örn: Kullanici" autocomplete="username">
+                </div>
+                <div class="mb-6 text-left">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="Şifreniz" autocomplete="current-password">
+                </div>
+                <p id="loginMessage" class="text-red-600 text-sm mb-4 hidden"></p>
+
+                <button type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                    <i class="lucide-log-in mr-2"></i> Giriş Yap
+                </button>
+            </form>
+            <p class="mt-4 text-xs text-gray-500">
+                (Simülasyon amaçlı herhangi bir kullanıcı adı ve şifre girebilirsiniz.)
+            </p>
+        </div>
+
+        <div id="homeView" class="text-center p-8 max-w-2xl mx-auto my-auto">
+            <h1 class="text-5xl font-extrabold text-gray-800 mb-4">
+                Çizim Psikolojisi Analiz Projesi
+            </h1>
+            <p class="text-xl text-gray-600 mb-8">
+                Çizimlerinizi analiz eden ve 50 farklı duygusal/psikolojik duruma göre rapor sunan yapay zeka
+                simülasyonu bitirme projenize hoş geldiniz.
+            </p>
+            <button onclick="handleStartAnalysis()"
+                class="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                <i class="lucide-pen-tool mr-2"></i> Çizim Analizine Başla
+            </button>
+            <div class="mt-10 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 text-sm">
+                    ⚠️ Bu proje bir simülasyon olmasına rağmen, sonuçları gerçek psikolojik analizden bağımsızdır.
+                </p>
+            </div>
+        </div>
+
+        <div id="drawingView" class="hidden w-full max-w-5xl mx-auto flex flex-col items-center">
+            <div id="drawingTools" class="flex flex-wrap justify-center space-x-2 sm:space-x-4 mb-4">
+            </div>
+            <div id="canvasContainer"
+                class="w-full shadow-2xl rounded-xl overflow-hidden border-4 border-indigo-200 bg-white relative">
+                <div id="loadingOverlay"
+                    class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10 hidden">
+                    <div class="text-white text-xl font-bold flex items-center">
+                        <i class="lucide-loader-2 w-6 h-6 animate-spin mr-2"></i>
+                        Analiz Ediliyor...
+                    </div>
+                </div>
+                <canvas id="drawingCanvas"></canvas>
+            </div>
+            <p class="mt-4 text-sm text-gray-500">
+                Çizim için farenizi basılı tutun veya dokunmatik ekranınızı kullanın. Silgiyi kullanırken de farenizi
+                basılı tutun.
+            </p>
+        </div>
+
+        <div id="resultView" class="hidden p-8 max-w-3xl mx-auto my-auto w-full">
+            <h2 id="resultTitle" class="text-4xl font-extrabold text-gray-800 mb-6 text-center">AI Analiz Raporu</h2>
+            <div id="resultCard" class="border-2 rounded-xl shadow-2xl p-6 mb-8">
+            </div>
+            <div class="text-center">
+                <button onclick="render('DRAWING')"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out">
+                    <i class="lucide-pen-tool mr-2"></i> Yeni Bir Çizim Yap
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="alertModal" class="fixed inset-0 z-50 flex justify-center pt-10 bg-black bg-opacity-50 hidden">
+        <div class="max-w-sm w-full h-fit transform transition-all duration-300 ease-out scale-95 opacity-0"
+            id="alertContent">
+
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative shadow-lg"
+                role="alert">
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center">
+                        <i class="lucide-octagon-alert w-5 h-5 mr-3 flex-shrink-0 text-red-500"></i>
+                        <strong class="font-bold mr-1"></strong>
+                    </div>
+                    <button onclick="closeAlert()"
+                        class="text-red-700 hover:text-red-900 transition duration-150 p-1 -mt-1" title="Kapat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="w-4 h-4">
+                            <path d="M18 6 6 18" />
+                            <path d="m6 6 12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="ml-8 mt-1 text-sm" id="alertMessage">
+                    Bu alana erişmek için öncelikle giriş yapmanız gerekmektedir.
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <button id="chatToggleButton" onclick="toggleChat()" class="fixed bottom-6 right-6 z-50 p-3 bg-indigo-600 text-white rounded-full shadow-xl 
+        hover:bg-indigo-700 transition duration-300 transform hover:scale-105 
+        ring-4 ring-indigo-400/50 animate-bounce-slow" title="Sohbeti Aç">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+
+                <path
+                    d="M14.706 4.313H9.294a4.98 4.98 0 0 0-4.982 4.981v5.412a4.98 4.98 0 0 0 4.982 4.982h5.412a4.98 4.98 0 0 0 4.982-4.982V9.294a4.98 4.98 0 0 0-4.982-4.982Z" />
+
+                <path
+                    d="M19.606 15.588h1.619a1.025 1.025 0 0 0 1.025-1.025V9.438a1.025 1.025 0 0 0-1.025-1.025h-1.62m-15.21 7.175h-1.62a1.025 1.025 0 0 1-1.025-1.025V9.438a1.025 1.025 0 0 1 1.025-1.025h1.62" />
+
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.765 8.413v-4.1m18.46 4.1l-.01-4.1M9.95 15.237a2.91 2.91 0 0 0 4.1 0m-6.17-4.262L8.903 9.95l1.025 1.025m4.102 0l1.025-1.025l1.024 1.025" />
+
+            </g>
+        </svg>
+    </button>
+
+    <div id="chatWindow"
+        class="fixed bottom-20 right-6 z-50 w-full max-w-sm h-[450px] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-200 hidden">
+        <div class="p-4 bg-indigo-600 text-white font-bold rounded-t-xl flex justify-between items-center">
+            AI Asistan
+            <button onclick="toggleChat()" class="text-indigo-200 hover:text-white transition duration-150 p-1 rounded"
+                title="Kapat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="w-4 h-4">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+        <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide"
+            style="max-height: 330px;">
+        </div>
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex space-x-2">
+                <input id="chatInput" type="text"
+                    class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Bir soru sor..." />
+                <button id="chatSendButton" onclick="sendChatMessage()"
+                    class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                    <i class="lucide-send w-5 h-5">Gönder</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="w-full p-4 text-center text-gray-500 text-sm border-t mt-auto">
+        DrawMind Bitirme Projesi &copy; 2024
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

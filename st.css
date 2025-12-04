@@ -1,0 +1,104 @@
+/* --- Global Stiller --- */
+
+/* Inter Font'u kullan */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Tailwind'in bg-gray-50'sini override etmesi gerekebilir */
+    transition: background-image 0.5s ease, filter 0.5s ease;
+}
+
+/* Canvas Stilleri */
+#drawingCanvas {
+    display: block;
+    width: 100%;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+/* Kaydırma çubuğu gizlenir */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- JS ile Yönetilen ARKA PLAN Efektleri --- */
+
+/* 🔥 Yeni Arka Plan Resmi */
+.bg-blurred {
+    /* LÜTFEN BU URL'Yİ KENDİ RESMİNİZLE DEĞİŞTİRİN */
+    background-image: url('https://picsum.photos/1920/1080?random=1');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    /* Arka planı sabitler */
+}
+
+/* 🔥 Bulanıklık efekti uygulayan sınıf (body'nin içeriğini bulanıklaştırır) */
+.backdrop-blur-lg-custom {
+    /* Bu, body'nin içindeki tüm içeriği (fixed navbar hariç) bulanıklaştırır */
+    filter: blur(8px);
+}
+
+/* --- JS ile Yönetilen ÇİZİM ARAÇLARI Durum Sınıfları (updateUI) --- */
+
+.tool-button-active {
+    background-color: #d1fae5;
+    color: #047857;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.tool-button-active:hover {
+    background-color: #a7f3d0;
+}
+
+.tool-button-disabled {
+    background-color: #9ca3af;
+    color: #4b5563;
+    cursor: not-allowed;
+}
+
+.color-button-base {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border-width: 4px;
+    transition: all 0.15s;
+    border-color: #e5e7eb;
+}
+
+.color-button-base:hover {
+    border-color: #9ca3af;
+}
+
+.color-button-selected {
+    border-color: #4f46e5;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* --- CHAT ve ANIMASYON Stilleri --- */
+
+#chatInput:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
+}
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateY(-5%);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+}
+
+.animate-bounce-slow {
+    animation: bounce-slow 3s infinite;
+}

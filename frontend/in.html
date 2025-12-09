@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Giriş Sayfası - Psikolojik Analiz</title>
+    <style>
+        :root {
+            --bg1: #d3eaff;
+            --gradient-start: #c4e2ff;
+            --gradient-end: #9ccfff;
+            --card: linear-gradient(180deg, #e5f4ff, #d2ebff);
+            --muted: #64748b;
+            --accent: #5ba7ff;
+            --glass: rgba(255, 255, 255, 0.65);
+            --text: #000;
+            --shadow: 0 20px 50px rgba(16, 24, 40, 0.12);
+        }
+
+        .dark {
+            --bg1: #071021;
+            --gradient-start: #052331;
+            --gradient-end: #0b2540;
+            --card: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            --muted: #9aa6bd;
+            --accent: #70e1b2;
+            --glass: rgba(255, 255, 255, 0.02);
+            --text: #fff;
+            --shadow: 0 20px 50px rgba(2, 6, 23, 0.6);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--bg1), #d0d0d0);
+        }
+
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            position: relative
+        }
+
+        .card {
+            width: 100%;
+            max-width: 980px;
+            background: var(--card);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            position: relative
+        }
+
+        .floating-shape {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(48px);
+            opacity: 0.28;
+            animation: float 10s ease-in-out infinite alternate
+        }
+
+        .blob.b1 {
+            width: 320px;
+            height: 320px;
+            background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+            top: -120px;
+            right: -40px
+        }
+
+        .blob.b2 {
+            width: 360px;
+            height: 360px;
+            background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+            bottom: -140px;
+            left: -60px;
+            opacity: 0.18
+        }
+
+        @keyframes float {
+            from {
+                transform: translateY(0)
+            }
+
+            to {
+                transform: translateY(-40px)
+            }
+        }
+
+        .left {
+            padding: 48px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(162, 211, 255, 0.02));
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative
+        }
+
+        .dark .left {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.02));
+        }
+
+
+        h1 {
+            margin: 0;
+            font-size: 1.6rem
+        }
+
+        p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.98rem
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 340px;
+            margin-top: 12px;
+            border-radius: 12px
+        }
+
+        .right {
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 18px
+        }
+
+        .top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px
+        }
+
+        .welcome-note {
+            background: var(--glass);
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(11, 23, 50, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .breath {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, var(--accent), #8bd5ff);
+            animation: breath 3s ease-in-out infinite
+        }
+
+        @keyframes breath {
+            0% {
+                transform: scale(0.7);
+                opacity: 0.6
+            }
+
+            50% {
+                transform: scale(1.6);
+                opacity: 1
+            }
+
+            100% {
+                transform: scale(0.7);
+                opacity: 0.6
+            }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        label {
+            font-size: 0.88rem;
+            color: var(--text)
+        }
+
+        input[type=email],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            background: transparent;
+            font-size: 0.98rem;
+            color: inherit
+        }
+
+        .dark input[type=email],
+        .dark input[type=password] {
+            border-color: rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+
+        .field-row {
+            display: flex;
+            gap: 12px
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--muted)
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 0;
+            background: linear-gradient(90deg, var(--accent), #7ec8ff);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(91, 108, 246, 0.14);
+            transition: transform .18s ease, box-shadow .18s ease
+        }
+
+        .dark .btn {
+            background: linear-gradient(90deg, var(--accent), #a3f5d1);
+            color: var(--text);
+        }
+
+
+        .btn:active {
+            transform: translateY(1px)
+        }
+
+        .alt {
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 6px
+        }
+
+        .small-help {
+            font-size: 0.85rem;
+            color: var(--muted)
+        }
+
+        .bubbles {
+            position: absolute;
+            left: 18px;
+            bottom: 18px;
+            width: 240px;
+            height: 240px;
+            pointer-events: none
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
+            opacity: 0.9;
+            animation: rise 6s linear infinite
+        }
+
+        .dark .bubble {
+            background: radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+            opacity: 0.9;
+        }
+
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(0.6);
+                opacity: 0
+            }
+
+            10% {
+                opacity: 0.7
+            }
+
+            100% {
+                transform: translateY(-220px) scale(1.2);
+                opacity: 0
+            }
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            padding: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .dark .theme-toggle {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+
+        @media(max-width:880px) {
+            .card {
+                grid-template-columns: 1fr;
+                max-width: 560px
+            }
+
+            .left {
+                order: 2;
+                padding: 28px
+            }
+
+            .right {
+                order: 1;
+                padding: 28px
+            }
+
+            .bubbles {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap" id="pageWrap">
+        <div class="floating-shape" aria-hidden="true">
+            <div class="blob b1"></div>
+            <div class="blob b2"></div>
+        </div>
+
+        <main class="card" role="main" aria-labelledby="title">
+            <section class="left" aria-hidden="false">
+                <h1 id="title">Hoş geldiniz</h1>
+                <p class="lead">Burada güvenli ve yargısız bir alan var. Giriş yapmadan önce derin bir nefes alın —
+                    stresinizi dışarıda bırakın.</p>
+
+                <svg class="illustration" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" role="img"
+                    aria-label="Soyut zihin ve psikoloji illüstrasyonu">
+                    <defs>
+                        <linearGradient id="g1" x1="0" x2="1">
+                            <stop offset="0" stop-color="#9be7d6" />
+                            <stop offset="1" stop-color="#a7c8ff" />
+                        </linearGradient>
+                        <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="8" />
+                        </filter>
+                    </defs>
+                    <g transform="translate(80,40)">
+                        <ellipse cx="320" cy="180" rx="260" ry="130" fill="url(#g1)" opacity="0.12" />
+                        <g filter="url(#blur)">
+                            <path d="M150 200 C120 80, 420 40, 480 120 C560 220, 320 320, 150 260 Z" fill="#7ec8ff"
+                                opacity="0.18" />
+                            <path d="M200 160 C240 80, 360 80, 420 160 C460 210, 360 260, 220 240 Z" fill="#9be7d6"
+                                opacity="0.28" />
+                        </g>
+                        <g stroke-opacity="0.9" stroke="#ffffff" stroke-width="2.2" fill="none" opacity="0.95">
+                            <path d="M220 120 C230 100, 270 90, 300 110" />
+                            <path d="M260 140 C280 130, 320 130, 350 150" />
+                            <path d="M200 160 C220 150, 260 150, 300 180" />
+                        </g>
+                        <g fill="#ffffff" opacity="0.9">
+                            <circle cx="120" cy="140" r="4" />
+                            <circle cx="480" cy="100" r="3" />
+                            <circle cx="360" cy="220" r="3.5" />
+                        </g>
+                        <path d="M280 180 C300 150, 360 150, 380 180 C400 210, 320 230, 280 180 Z" fill="#ffd6a5"
+                            opacity="0.18" />
+                        <circle cx="330" cy="170" r="6" fill="#ffb4a2" opacity="0.22" />
+                    </g>
+                </svg>
+
+                <div class="bubbles" aria-hidden="true" id="bubbles"></div>
+            </section>
+
+            <section class="right">
+                <div class="top-row">
+                    <div class="welcome-note">
+                        <div class="breath" aria-hidden="true"></div>
+                        <div>
+                            <div style="font-weight:700">Sakin bir başlangıç</div>
+                            <div class="small-help">Analiz en iyi sakin bir zihinle çalışır — birkaç saniye nefes
+                                alalım.</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="theme-toggle" id="themeToggle" aria-pressed="false">🌙</button>
+                    </div>
+                </div>
+
+                <form onsubmit="event.preventDefault();handleLogin();" aria-label="Giriş Formu">
+                    <div>
+                        <label for="email">E-posta</label>
+                        <input id="email" type="email" placeholder="ornek@ornek.com" required />
+                    </div>
+
+                    <div>
+                        <label for="password">Şifre</label>
+                        <input id="password" type="password" placeholder="Şifreniz" required />
+                    </div>
+
+                    <div class="field-row" style="align-items:center;justify-content:space-between">
+                        <label class="remember"><input type="checkbox" id="remember" /> Beni hatırla</label>
+                        <button type="submit" class="btn">Giriş Yap</button>
+                    </div>
+
+                    <div class="alt">İlk kez mi? <a href="#">Hesap oluştur</a></div>
+                </form>
+
+                <div style="margin-top:6px;font-size:0.85rem;color:var(--muted)">Not: Verileriniz gizli tutulur.
+                    Herhangi bir rahatsızlık hissederseniz işlemi durdurabilirsiniz.</div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Tema değiştirme mantığı
+        const pageWrap = document.getElementById('pageWrap');
+        const themeToggle = document.getElementById('themeToggle');
+        const saved = localStorage.getItem('zy-theme');
+        if (saved === 'dark') pageWrap.classList.add('dark');
+        updateToggleIcon();
+
+        themeToggle.addEventListener('click', () => {
+            pageWrap.classList.toggle('dark');
+            const isDark = pageWrap.classList.contains('dark');
+            localStorage.setItem('zy-theme', isDark ? 'dark' : 'light');
+            updateToggleIcon();
+        });
+        function updateToggleIcon() {
+            const isDark = pageWrap.classList.contains('dark');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+            themeToggle.setAttribute('aria-pressed', String(isDark));
+        }
+
+        // Baloncuk animasyonu
+        const bubblesEl = document.getElementById('bubbles');
+        function makeBubble(delay, size, left) {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            b.style.width = size + 'px';
+            b.style.height = size + 'px';
+            b.style.left = left + 'px';
+            b.style.bottom = '-10px';
+            b.style.animationDelay = delay + 's';
+            b.style.opacity = 0;
+            bubblesEl.appendChild(b);
+        }
+        makeBubble(0, 28, 40);
+        makeBubble(0.8, 18, 90);
+        makeBubble(1.6, 34, 160);
+        makeBubble(2.4, 22, 210);
+        makeBubble(3.2, 16, 120);
+
+        /**
+         * handleLogin: Giriş simülasyonunu yapar, localStorage'a kaydeder ve ana sayfaya yönlendirir.
+         * Hata korumalı try/catch yapısını uyguladım.
+         */
+        function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const pass = document.getElementById('password').value.trim();
+
+            if (!email || !pass) {
+                alert('Lütfen e-posta ve şifre girin.');
+                return;
+            }
+
+            try {
+                // Arayüz güncellemesini hata korumalı alanda tut
+                const welcome = document.querySelector('.welcome-note div');
+                if (welcome) {
+                    welcome.innerHTML = '<div style="font-weight:700">Giriş Başarılı!</div><div class="small-help">Ana uygulamaya yönlendiriliyor...</div>';
+                }
+            } catch (e) {
+                console.error("Arayüz güncelleme hatası, ancak yönlendirme devam ediyor:", e);
+                // Hata oluşsa bile yönlendirmeyi engellememek için devam
+            }
+
+            // Simülasyon gecikmesi
+            setTimeout(() => {
+                // 1. Oturum durumunu localStorage'a kaydet
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // 2. Ana uygulamaya yönlendir
+                window.location.href = 'index.html';
+
+            }, 900);
+        }
+    </script>
+</body>
+
+</html>

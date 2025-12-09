@@ -1,0 +1,344 @@
+:root {
+    --bg1: #d3eaff;
+    --gradient-start: #c4e2ff;
+    --gradient-end: #9ccfff;
+    --card: linear-gradient(180deg, #e5f4ff, #d2ebff);
+    --muted: #9fafc5;
+    --accent: #5ba7ff;
+    --glass: rgba(255, 255, 255, 0.65);
+    --text: #000;
+    --shadow: 0 20px 50px rgba(16, 24, 40, 0.12);
+}
+
+.dark {
+    --bg1: #071021;
+    --gradient-start: #052331;
+    --gradient-end: #0b2540;
+    --card: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    --muted: #000;
+    /* Kullanıcı isteği: Koyu modda siyah */
+    --accent: #70e1b2;
+    --glass: rgba(255, 255, 255, 0.02);
+    --text: #000;
+    /* Kullanıcı isteği: Koyu modda siyah */
+    --shadow: 0 20px 50px rgba(2, 6, 23, 0.6);
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Inter, system-ui, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--bg1), #d0d0d0);
+}
+
+.dark body {
+    background: linear-gradient(135deg, var(--bg1), #000);
+}
+
+
+.wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    position: relative
+}
+
+.card {
+    width: 100%;
+    max-width: 980px;
+    background: var(--card);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    position: relative
+}
+
+.floating-shape {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(48px);
+    opacity: 0.28;
+    animation: float 10s ease-in-out infinite alternate
+}
+
+.blob.b1 {
+    width: 320px;
+    height: 320px;
+    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    top: -120px;
+    right: -40px
+}
+
+.blob.b2 {
+    width: 360px;
+    height: 360px;
+    background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+    bottom: -140px;
+    left: -60px;
+    opacity: 0.18
+}
+
+@keyframes float {
+    from {
+        transform: translateY(0)
+    }
+
+    to {
+        transform: translateY(-40px)
+    }
+}
+
+.left {
+    padding: 48px 40px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(162, 211, 255, 0.02));
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.6rem
+}
+
+p.lead {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.98rem
+}
+
+.illustration {
+    width: 100%;
+    max-width: 340px;
+    margin-top: 12px;
+    border-radius: 12px
+}
+
+.right {
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px
+}
+
+/* Top row'u sadece tema düğmesi için yeniden düzenliyoruz */
+.top-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* Sadece sağa hizalandı */
+    gap: 12px
+}
+
+.welcome-note {
+    background: var(--glass);
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(11, 23, 50, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.dark .welcome-note {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.breath {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--accent), #8bd5ff);
+    animation: breath 3s ease-in-out infinite
+}
+
+@keyframes breath {
+    0% {
+        transform: scale(0.7);
+        opacity: 0.6
+    }
+
+    50% {
+        transform: scale(1.6);
+        opacity: 1
+    }
+
+    100% {
+        transform: scale(0.7);
+        opacity: 0.6
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px
+}
+
+label {
+    font-size: 0.88rem;
+    color: var(--text)
+}
+
+input[type=email],
+input[type=password] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    background: transparent;
+    font-size: 0.98rem;
+    color: inherit
+}
+
+.dark input[type=email],
+.dark input[type=password] {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.field-row {
+    display: flex;
+    gap: 12px
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--muted)
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 0;
+    background: linear-gradient(90deg, var(--accent), #7ec8ff);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(91, 108, 246, 0.14);
+    transition: transform .18s ease, box-shadow .18s ease
+}
+
+.dark .btn {
+    background: linear-gradient(90deg, var(--accent), #94efc9);
+    box-shadow: 0 10px 30px rgba(112, 225, 178, 0.2);
+}
+
+.btn:active {
+    transform: translateY(1px)
+}
+
+.alt {
+    font-size: 0.9rem;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 6px
+}
+
+.small-help {
+    font-size: 0.85rem;
+    color: var(--muted)
+}
+
+.bubbles {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    width: 240px;
+    height: 240px;
+    pointer-events: none
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
+    opacity: 0.9;
+    animation: rise 6s linear infinite
+}
+
+.dark .bubble {
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) scale(0.6);
+        opacity: 0
+    }
+
+    10% {
+        opacity: 0.7
+    }
+
+    100% {
+        transform: translateY(-220px) scale(1.2);
+        opacity: 0
+    }
+}
+
+.theme-toggle {
+    background: transparent;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.2rem;
+    transition: background-color 0.2s;
+}
+
+.dark .theme-toggle {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+@media(max-width:880px) {
+    .card {
+        grid-template-columns: 1fr;
+        max-width: 560px
+    }
+
+    .left {
+        order: 2;
+        padding: 28px
+    }
+
+    .right {
+        order: 1;
+        padding: 28px
+    }
+
+    .bubbles {
+        display: none
+    }
+}

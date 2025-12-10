@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Giriş Sayfası - Psikolojik Analiz</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <div class="wrap" id="pageWrap">
+        <div class="floating-shape" aria-hidden="true">
+            <div class="blob b1"></div>
+            <div class="blob b2"></div>
+        </div>
+
+        <main class="card" role="main" aria-labelledby="title">
+            <section class="left" aria-hidden="false">
+                <h1 id="title">Hoş geldiniz</h1>
+                <p class="lead">Burada güvenli ve yargısız bir alan var. Giriş yapmadan önce derin bir nefes alın.
+                    Stresinizi dışarıda bırakın.</p>
+
+                <svg class="illustration" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg" role="img"
+                    aria-label="Soyut zihin ve psikoloji illüstrasyonu">
+                    <!-- SVG içeriği aynı -->
+                </svg>
+
+                <div class="bubbles" aria-hidden="true" id="bubbles"></div>
+            </section>
+
+            <section class="right">
+                <div class="top-row">
+                    <div>
+                        <button class="theme-toggle" id="themeToggle" aria-pressed="false">🌙</button>
+                    </div>
+                </div>
+
+                <form onsubmit="event.preventDefault();handleLogin();" aria-label="Giriş Formu">
+                    <div>
+                        <label for="email">E-posta</label>
+                        <input id="email" type="email" placeholder="ornek@ornek.com" required />
+                    </div>
+
+                    <div>
+                        <label for="password">Şifre</label>
+                        <input id="password" type="password" placeholder="Şifreniz" required />
+                    </div>
+
+                    <div class="field-row" style="align-items:center;justify-content:space-between">
+                        <label class="remember"><input type="checkbox" id="remember" /> Beni hatırla</label>
+                        <button type="submit" class="btn">Giriş Yap</button>
+                    </div>
+
+                    <!-- Hesap oluştur linkini kaldırdık -->
+                    <div class="alt">Hesap oluşturma linki kaldırıldı. Giriş yaparken otomatik kayıt yapılır.</div>
+                </form>
+
+                <div style="margin-top:6px;font-size:0.85rem;color:var(--muted)">
+                    Not: Verileriniz gizli tutulur. Herhangi bir rahatsızlık hissederseniz işlemi durdurabilirsiniz.
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const pageWrap = document.getElementById('pageWrap');
+        const themeToggle = document.getElementById('themeToggle');
+        const saved = localStorage.getItem('zy-theme');
+        if (saved === 'dark') pageWrap.classList.add('dark');
+        updateToggleIcon();
+
+        themeToggle.addEventListener('click', () => {
+            pageWrap.classList.toggle('dark');
+            const isDark = pageWrap.classList.contains('dark');
+            localStorage.setItem('zy-theme', isDark ? 'dark' : 'light');
+            updateToggleIcon();
+        });
+        function updateToggleIcon() {
+            const isDark = pageWrap.classList.contains('dark');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+            themeToggle.setAttribute('aria-pressed', String(isDark));
+        }
+
+        const bubblesEl = document.getElementById('bubbles');
+        function makeBubble(delay, size, left) {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            b.style.width = size + 'px';
+            b.style.height = size + 'px';
+            b.style.left = left + 'px';
+            b.style.bottom = '-10px';
+            b.style.animationDelay = delay + 's';
+            b.style.opacity = 0;
+            bubblesEl.appendChild(b);
+        }
+        makeBubble(0, 28, 40);
+        makeBubble(0.8, 18, 90);
+        makeBubble(1.6, 34, 160);
+        makeBubble(2.4, 22, 210);
+        makeBubble(3.2, 16, 120);
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email || !password) {
+                alert("Lütfen e-posta ve şifreyi doldurun.");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:5000/api/login/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                    alert(data.msg);
+                    return;
+                }
+
+                // Token sakla
+                localStorage.setItem("authToken", data.token);
+
+                // Giriş başarılı → kullanıcı işaretle
+                localStorage.setItem("drawMindIsLoggedIn", "true");
+
+
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 500);
+
+            } catch (err) {
+                console.error(err);
+                alert("Sunucuya bağlanılamadı.");
+            }
+        }
+    </script>
+</body>
+
+</html>

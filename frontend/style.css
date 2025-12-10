@@ -1,0 +1,324 @@
+/* --- Global Stiller --- */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+}
+
+/* Canvas Stilleri */
+#drawingCanvas {
+    display: block;
+    width: 100%;
+    height: 500px;
+    touch-action: none;
+    cursor: crosshair;
+    background: #ffffff;
+}
+
+/* Kaydırma çubuğu gizlenir */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- ANALİZ YÜKLEME ANİMASYONU --- */
+#loadingOverlay .animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- ÇİZİM ARAÇLARI --- */
+.tool-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.tool-button-active {
+    background-color: #4f46e5;
+    color: white;
+    border-color: #4f46e5;
+}
+
+.tool-button-inactive {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border-color: #e5e7eb;
+}
+
+.tool-button-inactive:hover {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+}
+
+.color-button {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 3px solid #e5e7eb;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.color-button:hover {
+    border-color: #9ca3af;
+    transform: scale(1.1);
+}
+
+.color-button-selected {
+    border-color: #4f46e5;
+    box-shadow: 0 4px 6px -1px rgb(79 70 229 / 0.3);
+    transform: scale(1.1);
+}
+
+/* --- CHAT ve MESAJ ALANLARI --- */
+.message-bubble {
+    max-width: 80%;
+    word-wrap: break-word;
+    position: relative;
+    padding: 12px 16px;
+    margin: 4px 0;
+}
+
+.user-message {
+    background-color: #4f46e5;
+    color: white;
+    align-self: flex-end;
+    border-radius: 18px 18px 4px 18px;
+    margin-left: auto;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+}
+
+.bot-message {
+    background-color: #f3f4f6;
+    color: #374151;
+    align-self: flex-start;
+    border-radius: 18px 18px 18px 4px;
+    margin-right: auto;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.custom-message-box {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 0 15px;
+    border-radius: 12px;
+    border: 1px solid rgb(209, 213, 219);
+    gap: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.custom-message-box:focus-within {
+    border: 1px solid rgb(99, 102, 241);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+#chatInput {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #374151;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+#chatInput::placeholder {
+    color: #9ca3af;
+}
+
+#sendButton {
+    width: fit-content;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#sendButton svg {
+    height: 20px;
+    transition: all 0.3s;
+}
+
+#sendButton svg path {
+    transition: all 0.3s;
+}
+
+#sendButton:hover svg path {
+    fill: #4f46e5;
+    stroke: #4f46e5;
+}
+
+/* File upload & preview */
+.file-upload-wrapper {
+    width: fit-content;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#fileInput {
+    display: none;
+}
+
+.file-upload-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.file-upload-label svg {
+    height: 20px;
+    transition: all 0.3s;
+}
+
+.file-upload-label svg path,
+.file-upload-label svg circle {
+    transition: all 0.3s;
+}
+
+.file-upload-label:hover svg path {
+    stroke: #4f46e5;
+}
+
+.file-upload-label:hover svg circle {
+    stroke: #4f46e5;
+    fill: #f5f3ff;
+}
+
+.file-upload-label:hover .tooltip {
+    display: block;
+    opacity: 1;
+}
+
+.tooltip {
+    position: absolute;
+    top: -40px;
+    display: none;
+    opacity: 0;
+    color: #374151;
+    font-size: 12px;
+    background-color: #ffffff;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    z-index: 1000;
+}
+
+.file-preview {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #4b5563;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-remove {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.file-remove:hover {
+    background-color: #fee2e2;
+}
+
+/* Robot icon animation */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.9);
+    }
+}
+
+.robot-icon {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+#messagesContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#messagesContainer::-webkit-scrollbar-track {
+    background: #f9fafb;
+}
+
+#messagesContainer::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+#messagesContainer::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* --- Login view --- */
+body:has(#loginView:not(.hidden)) {
+    background: url('dd.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
+    background-color: transparent !important;
+}
+
+#loginView:not(.hidden) {
+    background: transparent !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25) !important;
+}

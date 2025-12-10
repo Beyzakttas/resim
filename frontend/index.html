@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrawMind AI Analiz Projesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="bg-gray-50 font-inter text-gray-800">
+
+    <!-- Login kontrolü -->
+    <script>
+        function logout() {
+            localStorage.removeItem('drawMindIsLoggedIn');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full top-0 bg-white shadow-md z-50">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">🧠 DrawMind AI Analiz</h1>
+            <ul class="flex space-x-6 text-gray-700 font-semibold">
+                <li><a href="#home" class="hover:text-indigo-600 transition">Home</a></li>
+                <li><a href="#services" class="hover:text-indigo-600 transition">Services</a></li>
+                <li><a href="#about" class="hover:text-indigo-600 transition">About</a></li>
+                <li><button onclick="logout()" class="hover:text-red-600 transition">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home"
+        class="pt-24 h-screen bg-gradient-to-r from-indigo-500 to-blue-400 text-white flex items-center justify-center">
+        <div class="text-center max-w-2xl px-6 flex flex-col items-center">
+            <h1 class="text-5xl font-extrabold mb-4">
+                <span id="typewriter-text"></span><span id="cursor" class="text-yellow-300 animate-pulse">|</span>
+            </h1>
+            <p class="text-xl mb-8">Çizimlerinizi analiz eden ve 50 farklı duygusal/psikolojik duruma göre rapor sunan
+                yapay zeka simülasyonu bitirme projenize hoş geldiniz.</p>
+            <button onclick="startAnalysis()"
+                class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 flex items-center gap-2">
+                <i class="lucide-pen-tool w-5 h-5"></i> Çizim Analizine Başla
+            </button>
+        </div>
+    </section>
+
+    <!-- Services Section - GÜNCELLENMİŞ -->
+    <section id="services"
+        class="min-h-screen py-8 md:py-0 flex flex-col items-center justify-center bg-gray-100 text-gray-800">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 md:mb-12 px-4 text-center">
+            Services
+        </h2>
+
+        <div class="services-container w-full px-4 sm:px-6">
+            <div class="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+                <!-- Kart 1 - AI Analiz -->
+                <div
+                    class="group bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-6 md:p-8 text-center transform transition-all duration-500 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-indigo-200 hover:shadow-indigo-300/50">
+                    <div class="relative mx-auto mb-6">
+                        <div
+                            class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-indigo-400/50 transition-all duration-500">
+                            <div class="text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
+                                    <path
+                                        d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 3.48-3.04Z" />
+                                    <path
+                                        d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-3.48-3.04Z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-800 group-hover:text-indigo-600 transition-colors duration-300">
+                        AI Analiz
+                    </h3>
+                    <p
+                        class="text-gray-600 mb-4 text-sm sm:text-base group-hover:text-gray-800 transition-colors duration-300">
+                        Gelişmiş yapay zeka algoritmaları ile çizimlerinizi detaylı analiz eder.
+                    </p>
+
+                    <div
+                        class="mt-4 pt-4 border-t border-gray-100 group-hover:border-indigo-100 transition-colors duration-300">
+                        <div
+                            class="flex items-center justify-center text-xs sm:text-sm text-indigo-600 group-hover:text-indigo-700 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="mr-2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                            </svg>
+                            <span class="font-medium">Güvenli ve Hızlı</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kart 2 - Detaylı Rapor -->
+                <div
+                    class="group bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-6 md:p-8 text-center transform transition-all duration-500 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-green-200 hover:shadow-green-300/50">
+                    <div class="relative mx-auto mb-6">
+                        <div
+                            class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-green-400/50 transition-all duration-500">
+                            <div class="text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M7 16h8" />
+                                    <path d="M7 11h12" />
+                                    <path d="M7 6h3" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-800 group-hover:text-green-600 transition-colors duration-300">
+                        Detaylı Rapor
+                    </h3>
+                    <p
+                        class="text-gray-600 mb-4 text-sm sm:text-base group-hover:text-gray-800 transition-colors duration-300">
+                        Psikolojik değerlendirme ve kapsamlı raporlar sunar.
+                    </p>
+
+                    <div
+                        class="mt-4 pt-4 border-t border-gray-100 group-hover:border-green-100 transition-colors duration-300">
+                        <div
+                            class="flex items-center justify-center text-xs sm:text-sm text-green-600 group-hover:text-green-700 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="mr-2">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                                <polyline points="14 2 14 8 20 8" />
+                                <line x1="16" x2="8" y1="13" y2="13" />
+                                <line x1="16" x2="8" y1="17" y2="17" />
+                                <line x1="10" x2="8" y1="9" y2="9" />
+                            </svg>
+                            <span class="font-medium">50+ Analiz Parametresi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kart 3 - Güvenli & Anonim -->
+                <div
+                    class="group bg-white rounded-xl md:rounded-2xl shadow-lg md:shadow-xl p-6 md:p-8 text-center transform transition-all duration-500 border border-gray-100 hover:shadow-2xl hover:-translate-y-2 hover:border-blue-200 hover:shadow-blue-300/50">
+                    <div class="relative mx-auto mb-6">
+                        <div
+                            class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl group-hover:shadow-blue-400/50 transition-all duration-500">
+                            <div class="text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                                    <path d="m9 12 2 2 4-4" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+                        Güvenli & Anonim
+                    </h3>
+                    <p
+                        class="text-gray-600 mb-4 text-sm sm:text-base group-hover:text-gray-800 transition-colors duration-300">
+                        Verileriniz korunur ve anonim olarak analiz edilir.
+                    </p>
+
+                    <div
+                        class="mt-4 pt-4 border-t border-gray-100 group-hover:border-blue-100 transition-colors duration-300">
+                        <div
+                            class="flex items-center justify-center text-xs sm:text-sm text-blue-600 group-hover:text-blue-700 transition-colors duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="mr-2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            <span class="font-medium">End-to-End Şifreleme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobilde boşluk için -->
+    <div class="h-8 md:h-0"></div>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen flex items-center justify-center bg-white py-8 md:py-0">
+        <div class="container mx-auto px-4 md:px-6 max-w-4xl text-center">
+            <h2
+                class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-8 md:mb-12 px-4 text-center text-indigo-700">
+                Hakkımda</h2>
+
+            <p class="text-gray-700 mb-4">
+                Merhaba! Ben DrawMind AI Analiz projesinin geliştiricisiyim. Bu projede çizim analizlerini modern web
+                teknolojileri ile birleştirerek kullanıcı dostu bir platform oluşturdum. Amacım, kullanıcıların
+                çizimlerini yapay zeka desteğiyle analiz ederek psikolojik durumları hakkında fikir verebilmek ve bunu
+                kullanıcı dostu bir arayüzle sunmaktır.
+            </p>
+            <p class="text-gray-700 mb-4">
+                Projemde, kullanıcıların çizimlerini yükleyebileceği, bu çizimlerin otomatik olarak analiz edilebileceği
+                ve detaylı raporlar alabileceği bir sistem geliştirdim. Bu sistem sayesinde kullanıcılar, çizimlerinin
+                renk kullanımı, çizgi kalınlığı, kompozisyon ve diğer birçok parametre açısından değerlendirilmesini
+                sağlayabilirler.
+            </p>
+            <p class="text-gray-700 mb-4">
+                DrawMind AI Analiz projesi, temel olarak HTML, CSS, JavaScript ve Python teknolojilerini kullanmaktadır.
+                Frontend tarafında modern web teknolojilerinden faydalanırken, backend tarafında yapay zeka
+                algoritmaları ile çizim analizi gerçekleştirilmektedir. Kullanıcı arayüzü tasarımında kullanıcı
+                deneyimini ön planda tutarak, herkesin rahatlıkla kullanabileceği bir platform oluşturmaya çalıştım.
+            </p>
+            <p class="text-gray-700 mb-4">
+                Bu projeyi geliştirirken en büyük motivasyon kaynağım, teknoloji ve psikolojiyi bir araya getirerek
+                insanlara faydalı olabilecek bir ürün ortaya koymaktı. Çizim analizinin psikolojik değerlendirmelerde
+                kullanılabileceği fikrinden yola çıkarak, bu süreci otomatikleştiren ve kullanıcı dostu bir hale getiren
+                bir sistem tasarladım.
+            </p>
+            <p class="text-gray-700">
+                Gelecekte bu projeyi daha da geliştirerek, daha fazla analiz parametresi eklemeyi, farklı çizim
+                türlerini desteklemeyi ve mobil uygulama versiyonunu çıkarmayı planlıyorum. Ayrıca, kullanıcı geri
+                bildirimlerine göre sistemin iyileştirilmesi ve yeni özellikler eklenmesi için sürekli çalışmalar
+                yapmayı hedefliyorum.
+            </p>
+        </div>
+    </section>
+
+    <!-- Uyarı -->
+    <div
+        class="max-w-3xl mx-auto p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm text-center mb-12 mt-20">
+        ⚠️ Bu proje bir simülasyondur, gerçek psikolojik analiz yerine geçmez.
+    </div>
+
+    <!-- Chat Toggle Button -->
+    <button id="chatToggleButton" onclick="toggleChat()"
+        class="fixed bottom-6 right-6 z-50 p-4 bg-gradient-to-br from-indigo-600 to-purple-600 text-white rounded-full shadow-xl hover:scale-110 transition robot-icon flex items-center justify-center">
+        <!-- Robot İkonu -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                <path
+                    d="M14.706 4.313H9.294a4.98 4.98 0 0 0-4.982 4.981v5.412a4.98 4.98 0 0 0 4.982 4.982h5.412a4.98 4.98 0 0 0 4.982-4.982V9.294a4.98 4.98 0 0 0-4.982-4.982Z" />
+                <path
+                    d="M19.606 15.588h1.619a1.025 1.025 0 0 0 1.025-1.025V9.438a1.025 1.025 0 0 0-1.025-1.025h-1.62m-15.21 7.175h-1.62a1.025 1.025 0 0 1-1.025-1.025V9.438a1.025 1.025 0 0 1 1.025-1.025h1.62" />
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.765 8.413v-4.1m18.46 4.1l-.01-4.1M9.95 15.237a2.91 2.91 0 0 0 4.1 0m-6.17-4.262L8.903 9.95l1.025 1.025m4.102 0l1.025-1.025l1.024 1.025" />
+            </g>
+        </svg>
+    </button>
+
+    <!-- Chat Window -->
+    <div id="chatWindow"
+        class="fixed bottom-20 right-6 z-50 w-full max-w-sm h-[500px] bg-white rounded-xl shadow-2xl flex flex-col border border-gray-200 opacity-0 scale-95 pointer-events-none transition-all duration-300">
+        <div class="p-4 bg-indigo-600 text-white font-bold rounded-t-xl flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <!-- Chat penceresi için de robot ikonu -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <g fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path
+                            d="M14.706 4.313H9.294a4.98 4.98 0 0 0-4.982 4.981v5.412a4.98 4.98 0 0 0 4.982 4.982h5.412a4.98 4.98 0 0 0 4.982-4.982V9.294a4.98 4.98 0 0 0-4.982-4.982Z" />
+                        <path
+                            d="M19.606 15.588h1.619a1.025 1.025 0 0 0 1.025-1.025V9.438a1.025 1.025 0 0 0-1.025-1.025h-1.62m-15.21 7.175h-1.62a1.025 1.025 0 0 1-1.025-1.025V9.438a1.025 1.025 0 0 1 1.025-1.025h1.62" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.765 8.413v-4.1m18.46 4.1l-.01-4.1M9.95 15.237a2.91 2.91 0 0 0 4.1 0m-6.17-4.262L8.903 9.95l1.025 1.025m4.102 0l1.025-1.025l1.024 1.025" />
+                    </g>
+                </svg>
+                AI Asistan
+            </div>
+            <button onclick="toggleChat()" class="text-white hover:text-gray-200">
+                <i class="lucide-x w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 flex flex-col">
+            <!-- İlk mesaj - AI'dan (solda) -->
+            <div class="bot-message message-bubble">
+                Merhaba! Ben DrawMind AI Asistanıyım. Çizimleriniz hakkında analiz yapabilir veya psikolojik durumlar
+                hakkında bilgi verebilirim. Nasıl yardımcı olabilirim?
+            </div>
+        </div>
+
+        <div id="filePreviewContainer" class="hidden px-4 pt-2"></div>
+
+        <div class="p-4 bg-white border-t">
+            <div class="custom-message-box">
+                <div class="file-upload-wrapper">
+                    <label for="fileInput" class="file-upload-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
+                            <circle stroke-width="20" stroke="#6c6c6c" fill="none" r="158.5" cy="168.5" cx="168.5">
+                            </circle>
+                            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M167.759 79V259"></path>
+                            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M79 167.138H259"></path>
+                        </svg>
+                        <span class="tooltip">Dosya Ekle</span>
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx" />
+                </div>
+                <input required placeholder="Mesajınızı yazın..." type="text" id="chatInput" />
+                <button id="sendButton" onclick="sendChatMessage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+                        <path fill="none"
+                            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888">
+                        </path>
+                        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="33.67" stroke="#6c6c6c"
+                            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner py-6 text-center mt-20 text-gray-600">
+        DrawMind Bitirme Projesi © 2025
+    </footer>
+
+    <!-- SCRIPT Bölümü -->
+    <script>
+        // Typewriter Animasyon
+        document.addEventListener('DOMContentLoaded', function () {
+            const text = "Çizim Psikolojisi Analiz Projesi";
+            let index = 0;
+            const target = document.getElementById('typewriter-text');
+            const cursor = document.getElementById('cursor');
+
+            function type() {
+                if (index < text.length) {
+                    target.innerHTML += text[index++];
+                    setTimeout(type, 100);
+                } else {
+                    cursor.style.display = 'none';
+                }
+            }
+            type();
+
+            // Chat input için Enter tuşu desteği
+            const chatInput = document.getElementById("chatInput");
+            chatInput.addEventListener("keydown", e => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+
+            // File input için event listener
+            const fileInput = document.getElementById("fileInput");
+            fileInput.addEventListener("change", handleFileUpload);
+        });
+
+        // Chat Aç/Kapat
+        function toggleChat() {
+            const w = document.getElementById('chatWindow');
+            w.classList.toggle('opacity-0');
+            w.classList.toggle('pointer-events-none');
+            w.classList.toggle('scale-95');
+
+            // Chat açıldığında input'a focus ol
+            if (!w.classList.contains('opacity-0')) {
+                setTimeout(() => {
+                    document.getElementById('chatInput').focus();
+                }, 300);
+            }
+        }
+
+        // Dosya yükleme işlemi
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const container = document.getElementById('messagesContainer');
+            const filePreviewContainer = document.getElementById('filePreviewContainer');
+
+            // Kullanıcı mesajı (sağda)
+            const userMsg = document.createElement('div');
+            userMsg.className = "user-message message-bubble";
+            userMsg.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="lucide-file w-4 h-4"></i>
+                    <span>${file.name}</span>
+                </div>
+            `;
+            container.appendChild(userMsg);
+
+            // Dosya önizlemesini göster
+            filePreviewContainer.classList.remove('hidden');
+            filePreviewContainer.innerHTML = `
+                <div class="file-preview">
+                    <div class="file-info">
+                        <i class="lucide-file-text w-5 h-5 text-indigo-500"></i>
+                        <span class="file-name">${file.name}</span>
+                        <span class="text-xs text-gray-500">(${(file.size / 1024).toFixed(1)} KB)</span>
+                    </div>
+                    <button class="file-remove" onclick="removeFile()">
+                        <i class="lucide-x w-4 h-4"></i>
+                    </button>
+                </div>
+            `;
+
+            container.scrollTop = container.scrollHeight;
+
+            // AI yanıtı (solda) - simülasyon
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = "bot-message message-bubble";
+                botMsg.innerHTML = `
+                    Dosyanız alındı! "${file.name}" dosyasını analiz etmemi ister misiniz? Veya başka bir sorunuz var mı?
+                `;
+                container.appendChild(botMsg);
+                container.scrollTop = container.scrollHeight;
+            }, 1000);
+        }
+
+        // Dosyayı kaldır
+        function removeFile() {
+            const filePreviewContainer = document.getElementById('filePreviewContainer');
+            const fileInput = document.getElementById('fileInput');
+
+            filePreviewContainer.classList.add('hidden');
+            filePreviewContainer.innerHTML = '';
+            fileInput.value = '';
+        }
+
+        // FRONTEND → BACKEND Sohbet Bağlantısı
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const container = document.getElementById('messagesContainer');
+
+            // Kullanıcı mesajı (sağda)
+            const userMsg = document.createElement('div');
+            userMsg.className = "user-message message-bubble";
+            userMsg.innerHTML = `<div>${msg}</div>`;
+            container.appendChild(userMsg);
+
+            input.value = "";
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const res = await fetch("http://localhost:5000/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: msg })
+                });
+
+                const data = await res.json();
+
+                const botMsg = document.createElement('div');
+                botMsg.className = "bot-message message-bubble";
+                botMsg.innerHTML = `<div>${data.response.yanit || data.response}</div>`;
+
+                container.appendChild(botMsg);
+                container.scrollTop = container.scrollHeight;
+
+            } catch (err) {
+                console.error("Chat hatası:", err);
+                // Hata mesajı (solda)
+                const errMsg = document.createElement('div');
+                errMsg.className = "bot-message message-bubble";
+                errMsg.innerHTML = `
+                    <div class="text-red-600">
+                        <i class="lucide-alert-circle w-4 h-4 inline mr-1"></i>
+                        Sunucuya bağlanılamadı! Lütfen daha sonra tekrar deneyin.
+                    </div>
+                `;
+                container.appendChild(errMsg);
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        // Analiz Sayfasına Git
+        function startAnalysis() {
+            window.location.href = "analysis.html";
+        }
+    </script>
+
+</body>
+
+</html>

@@ -76,6 +76,7 @@ def chat_endpoint():
             "error": f"Sunucu hatası: {e}"
         }), 500
 
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Sağlık kontrolü"""

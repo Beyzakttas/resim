@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrawMind AI Analiz Sayfası</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="analiz.css">
+
+</head>
+
+<body class="min-h-screen flex flex-col pt-16 bg-gray-50">
+
+    <nav class="fixed w-full top-0 bg-indigo-700 shadow-xl z-30">
+        <div class="relative px-4 sm:px-6 lg:px-8 h-16 flex items-center">
+            <div
+                class="absolute left-4 sm:left-6 lg:left-8 text-white font-extrabold text-2xl tracking-wider flex items-center">
+                <span class="text-2xl">🧠</span>
+                <span>DrawMind AI Analiz</span>
+            </div>
+            <div class="absolute right-4 sm:right-6 lg:right-8">
+                <button onclick="goHome()"
+                    class="text-white hover:text-indigo-200 transition duration-150 p-2 rounded-lg text-sm font-medium flex items-center">
+                    <i class="lucide-arrow-left w-4 h-4 mr-1"></i> Ana Sayfaya Dön
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
+
+        <div id="drawingSection" class="w-full max-w-4xl mx-auto flex flex-col items-center">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center">Çiziminizi Yapın</h1>
+
+            <div
+                class="w-full max-w-4xl bg-white p-4 rounded-xl shadow-lg mb-4 flex flex-col sm:flex-row justify-between items-center gap-4 border border-indigo-200">
+
+                <div class="flex items-center space-x-3">
+                    <label class="text-gray-700 font-semibold text-sm mr-2 flex items-center"><i
+                            class="lucide-palette w-4 h-4 mr-1"></i> Renk Seçimi:</label>
+                    <div id="colorPalette" class="flex space-x-2"></div>
+                </div>
+
+                <div class="flex items-center space-x-3 w-full sm:w-1/3">
+                    <label for="thicknessSlider"
+                        class="text-gray-700 font-semibold text-sm flex items-center whitespace-nowrap"><i
+                            class="lucide-pen-tool w-4 h-4 mr-1"></i> Kalınlık:</label>
+                    <input type="range" id="thicknessSlider" min="1" max="20" value="6" step="1"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer range-lg">
+                    <span id="thicknessValue" class="text-sm font-medium text-gray-600 w-6 text-right">6</span>
+                </div>
+            </div>
+
+            <div id="canvasContainer"
+                class="w-full shadow-2xl rounded-xl overflow-hidden border-4 border-indigo-500 bg-white relative">
+                <canvas id="drawingCanvas" class="w-full h-full"></canvas>
+                <div id="loadingOverlay"
+                    class="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center z-10 hidden transition-opacity duration-300 flex-col">
+                    <div class="loader">
+                        <div class="load-inner load-one"></div>
+                        <div class="load-inner load-two"></div>
+                        <div class="load-inner load-three"></div>
+                        <span class="text" id="analysisStatusText">AI Tarafından Analiz Ediliyor...</span>
+                    </div>
+                    <p id="analysisStatus" class="hidden"></p>
+                </div>
+            </div>
+
+            <div class="mt-6 flex gap-3 sm:gap-4 flex-wrap justify-center">
+
+                <button id="penButton" onclick="setPenMode()"
+                    class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 active:translate-y-0.5 text-sm ring-4 ring-indigo-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M3 21v-3l11-11 3 3L6 21H3z" />
+                        <path fill="none" d="M0 0h24v24H0z" />
+                    </svg>
+                    Kalem
+                </button>
+
+                <button id="eraserButton" onclick="setEraserMode()"
+                    class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 active:translate-y-0.5 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <g stroke-linejoin="round">
+                            <path d="M44.782 24.17L31.918 7.1L14.135 20.5L27.5 37l3.356-2.336" />
+                            <path d="m27.5 37l-3.839 3.075l-10.563-.001l-2.6-3.45l-6.433-8.536L14.5 20.225" />
+                            <path stroke-linecap="round" d="M13.206 40.072h31.36" />
+                        </g>
+                    </svg>
+                    Silgi
+                </button>
+
+
+
+                <button onclick="undo()" id="undoButton" disabled
+                    class="flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M7 19v-2h7.1q1.575 0 2.738-1T18 13.5T16.838 11T14.1 10H7.8l2.6 2.6L9 14L4 9l5-5l1.4 1.4L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5t-1.737 3.925T14.1 19z" />
+                    </svg>
+                    Geri Al
+                </button>
+
+                <button onclick="redo()" id="redoButton" disabled
+                    class="flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M17 19v-2h-7.1q-1.575 0-2.738-1T6 13.5 7.162 11 9.9 10h6.3l-2.6 2.6L15 14l5-5-5-5-1.4 1.4L16.2 8H9.9q-2.425 0-4.163 1.575T4 13.5t1.737 3.925T9.9 19z" />
+                    </svg>
+                    Yinele
+                </button>
+
+                <button onclick="clearCanvas()"
+                    class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 active:translate-y-0.5 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M3 6h18v2H3V6zm3 3h12v12H6V9z" />
+                    </svg>
+                    Tümünü Sil
+                </button>
+
+                <button onclick="runAnalysis()" id="analysisButton"
+                    class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 active:translate-y-0.5 text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M5 3l14 9-14 9V3z" />
+                    </svg>
+                    Analizi Başlat
+                </button>
+            </div>
+
+
+            <div id="debugPanel" class="mt-6 w-full max-w-4xl bg-gray-800 text-white p-4 rounded-lg hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-yellow-300">🔧 Geliştirici Konsolu</h3>
+                    <button onclick="toggleDebugPanel()" class="text-gray-400 hover:text-white">
+                        <i class="lucide-x w-4 h-4"></i>
+                    </button>
+                </div>
+                <pre id="debugOutput" class="text-xs overflow-auto max-h-40"></pre>
+                <div class="mt-2 flex gap-2">
+                    <button onclick="clearDebug()" class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-xs">
+                        Temizle
+                    </button>
+                    <button onclick="copyDebug()" class="px-3 py-1 bg-blue-700 hover:bg-blue-600 rounded text-xs">
+                        Kopyala
+                    </button>
+                    <button onclick="runQuickTest()" class="px-3 py-1 bg-green-700 hover:bg-green-600 rounded text-xs">
+                        Hızlı Test
+                    </button>
+                </div>
+            </div>
+
+            <p class="mt-4 text-sm text-gray-500 text-center max-w-sm">Lütfen AI'ın analiz edebileceği kadar büyük ve
+                belirgin bir çizim yapınız.</p>
+
+            <button onclick="toggleDebugPanel()" class="mt-2 text-xs text-gray-400 hover:text-gray-600">
+                <i class="lucide-bug w-3 h-3 inline mr-1"></i> Geliştirici Modu
+            </button>
+        </div>
+
+        <div id="resultSection" class="hidden w-full max-w-4xl mx-auto mt-10 text-center">
+            <h2 class="text-4xl font-extrabold text-gray-800 mb-6">AI Analiz Raporu</h2>
+            <div id="resultCard"
+                class="bg-white rounded-xl shadow-2xl p-8 border-2 border-indigo-300 text-gray-700 text-left text-base leading-relaxed">
+            </div>
+            <button onclick="resetDrawing()"
+                class="mt-8 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-8 rounded-xl font-bold transition shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-95 flex items-center mx-auto"><i
+                    class="lucide-pen-tool w-5 h-5 mr-2"></i> Yeni Çizim Yap</button>
+        </div>
+
+    </main>
+
+    <footer class="w-full p-4 text-center text-gray-500 text-sm border-t mt-auto">
+        DrawMind Bitirme Projesi &copy; 2024 - Backend Destekli
+    </footer>
+
+    <script>
+        // === MARKDOWN DÖNÜŞTÜRÜCÜSÜ (Yıldızları Kaldırıp Kalın Yapar) ===
+        function convertMarkdownToHtml(text) {
+            if (!text) return '';
+            // **...** desenini bulur ve <strong>...</strong> ile değiştirir
+            // $1, parantez içindeki yakalanan grubu (kalın yapılacak metni) temsil eder.
+            // Bu, yıldızların görünmesini engeller ve metni kalın yapar.
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        // === DEĞİŞKENLER ===
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const resultCard = document.getElementById('resultCard');
+        const analysisButton = document.getElementById('analysisButton');
+        const analysisStatus = document.getElementById('analysisStatus');
+        const thicknessSlider = document.getElementById('thicknessSlider');
+        const thicknessValueSpan = document.getElementById('thicknessValue');
+        const colorPalette = document.getElementById('colorPalette');
+        const undoButton = document.getElementById('undoButton');
+        const redoButton = document.getElementById('redoButton');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugOutput = document.getElementById('debugOutput');
+
+        let drawing = false;
+        let penSettings = { color: '#000000', thickness: 6 };
+        let history = [];
+        let historyIndex = -1;
+        const HISTORY_LIMIT = 50;
+        const availableColors = ['#000000', '#FF0000', '#0000FF', '#32C832', '#FFD700', '#9400D3', '#ffa54f', '#8b4513', '#ff34b3', '#8b8b7a'];
+
+        // === DEBUG FONKSİYONLARI ===
+        function logDebug(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const typeIcon = {
+                'info': '🔵',
+                'success': '🟢',
+                'warning': '🟡',
+                'error': '🔴',
+                'debug': '⚫'
+            }[type] || '⚪';
+
+            const logLine = `[${timestamp}] ${typeIcon} ${message}`;
+            console.log(logLine);
+
+            if (debugOutput) {
+                debugOutput.textContent += logLine + '\n';
+                debugOutput.scrollTop = debugOutput.scrollHeight;
+            }
+        }
+
+        function toggleDebugPanel() {
+            debugPanel.classList.toggle('hidden');
+        }
+
+        function clearDebug() {
+            debugOutput.textContent = '';
+            logDebug('Debug konsolu temizlendi', 'info');
+        }
+
+        function copyDebug() {
+            navigator.clipboard.writeText(debugOutput.textContent)
+                .then(() => {
+                    logDebug('Debug çıktısı kopyalandı', 'success');
+                    alert('Debug çıktısı panoya kopyalandı!');
+                })
+                .catch(err => {
+                    logDebug(`Kopyalama hatası: ${err.message}`, 'error');
+                });
+        }
+
+        // === ÇİZİM FONKSİYONLARI ===
+        function saveHistory() {
+            if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
+            history.push(canvas.toDataURL('image/png'));
+            historyIndex++;
+            if (history.length > HISTORY_LIMIT) { history.shift(); historyIndex--; }
+            updateHistoryButtons();
+            logDebug(`Geçmiş kaydedildi (${history.length} kayıt)`, 'debug');
+        }
+
+        function loadHistoryState(index) {
+            const img = new Image();
+            img.onload = function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = history[index];
+            historyIndex = index;
+            updateHistoryButtons();
+            logDebug(`Geçmiş yüklendi (index: ${index})`, 'debug');
+        }
+
+        function undo() {
+            if (historyIndex > 0) {
+                loadHistoryState(historyIndex - 1);
+                logDebug('Geri alındı', 'info');
+            }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) {
+                loadHistoryState(historyIndex + 1);
+                logDebug('Yinele yapıldı', 'info');
+            }
+        }
+
+        function updateHistoryButtons() {
+            undoButton.disabled = historyIndex <= 0;
+            redoButton.disabled = historyIndex >= history.length - 1;
+        }
+
+        function setCanvasSize() {
+            const oldDataURL = history.length > 0 ? history[historyIndex] : null;
+
+            canvas.width = canvasContainer.clientWidth;
+            canvas.height = canvasContainer.clientHeight;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Eski içeriği yükle (resize durumunda)
+            if (oldDataURL) {
+                const img = new Image();
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                };
+                img.src = oldDataURL;
+            } else {
+                saveHistory(); // İlk başta boş canvas'ı kaydet
+            }
+
+            logDebug(`Canvas boyutu güncellendi: ${canvas.width}x${canvas.height}`, 'info');
+        }
+
+        function createColorPalette() {
+            colorPalette.innerHTML = '';
+            availableColors.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+                swatch.style.backgroundColor = color;
+                swatch.setAttribute('data-color', color);
+                if (color === penSettings.color) swatch.classList.add('active');
+                // Tek tıklamayı garantilemek için event listener
+                swatch.addEventListener('click', () => selectColor(color));
+                colorPalette.appendChild(swatch);
+            });
+            logDebug(`Renk paleti oluşturuldu (${availableColors.length} renk)`, 'info');
+        }
+
+        // Renk seçim fonksiyonu güncellendi: Tek tıklamada hem rengi seçer hem de Kalem modunu ayarlar.
+        function selectColor(color) {
+            penSettings.color = color;
+            // Aktif renk halkasını güncelle
+            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.color-swatch[data-color="${color}"]`).classList.add('active');
+
+            // Renk seçildiğinde otomatik olarak Kalem moduna geçişi zorla (Silgi seçiliyse bile)
+            setPenMode();
+            logDebug(`Renk değiştirildi: ${color}`, 'debug');
+        }
+
+        function updateThickness() {
+            penSettings.thickness = parseInt(thicknessSlider.value);
+            thicknessValueSpan.textContent = penSettings.thickness;
+            logDebug(`Kalınlık değiştirildi: ${penSettings.thickness}`, 'debug');
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = penSettings.color;
+            ctx.lineWidth = penSettings.thickness;
+
+            history = [];
+            historyIndex = -1;
+            saveHistory();
+            logDebug('Canvas temizlendi', 'info');
+        }
+
+        // === CANVAS EVENT HANDLERS ===
+        window.addEventListener('resize', setCanvasSize);
+        thicknessSlider.addEventListener('input', updateThickness);
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', endStroke);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
+        canvas.addEventListener('touchend', endStroke);
+        canvas.addEventListener('touchcancel', stopDrawing);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+
+        function startDrawing(e) {
+            drawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            // Geri alma/yineleme sonrası yeni çizime başlanıyorsa, ileri geçmişi sil
+            if (history.length > 0 && historyIndex < history.length - 1) loadHistoryState(historyIndex);
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function stopDrawing() {
+            drawing = false;
+        }
+
+        function endStroke() {
+            if (drawing) {
+                stopDrawing();
+                saveHistory();
+            }
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+
+            // Kalem modu için renk ve kalınlık ayarları
+            if (penSettings.color !== '#FFFFFF') {
+                // Kalem modunda aktif rengi kullan
+                ctx.strokeStyle = penSettings.color;
+                ctx.globalCompositeOperation = 'source-over'; // Normal çizim modu
+            } else {
+                // Silgi modunda arka plan rengini kullan
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.globalCompositeOperation = 'source-over'; // Normal çizim (arka plan rengiyle)
+            }
+
+            ctx.lineWidth = penSettings.thickness;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        // Pen ve Eraser Modları için JS fonksiyonları
+        function setPenMode() {
+            // Aktif rengi geri al (varsayılan siyah veya seçili renk)
+            const activeColorSwatch = document.querySelector('.color-swatch.active');
+            penSettings.color = activeColorSwatch ? activeColorSwatch.dataset.color : '#000000';
+            penSettings.thickness = parseInt(thicknessSlider.value);
+            document.getElementById('penButton').classList.add('ring-4', 'ring-indigo-400');
+            document.getElementById('eraserButton').classList.remove('ring-4', 'ring-indigo-400');
+            logDebug(`Kalem modu seçildi: Renk=${penSettings.color}, Kalınlık=${penSettings.thickness}`, 'info');
+        }
+
+        function setEraserMode() {
+            penSettings.color = '#FFFFFF'; // Silme işlemi için arka plan rengi
+            penSettings.thickness = 20;    // Silgi için daha büyük kalınlık
+            document.getElementById('eraserButton').classList.add('ring-4', 'ring-indigo-400');
+            document.getElementById('penButton').classList.remove('ring-4', 'ring-indigo-400');
+            logDebug('Silgi modu seçildi', 'info');
+        }
+
+
+        // === ANALİZ FONKSİYONLARI ===
+        function base64ToData(base64) {
+            const match = base64.match(/^data:(.+?);base64,(.*)$/);
+            if (!match) {
+                logDebug('Base64 veri formatı hatalı', 'error');
+                return null;
+            }
+            return { mimeType: match[1], data: match[2] };
+        }
+
+        // Rapor içeriğini Markdown'dan HTML'e dönüştürerek render eden fonksiyon
+        function renderReport(data) {
+            logDebug(`Rapor oluşturuluyor: ${data.emotion}`, 'success');
+
+            // Backend'den gelen metin alanlarını HTML formatına dönüştür
+            const emotionHtml = convertMarkdownToHtml(data.emotion);
+            const psychologyHtml = convertMarkdownToHtml(data.psychology);
+            const colorAnalysisHtml = convertMarkdownToHtml(data.colorAnalysis);
+            const detailHtml = convertMarkdownToHtml(data.detail);
+
+            resultCard.innerHTML = `
+            <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-lg mb-4">
+                <p class="text-2xl font-extrabold text-indigo-800 text-center">${emotionHtml}</p>
+            </div>
+            <h3 class="report-section-title text-indigo-800 text-xl">Detaylı Psikolojik Yorum</h3>
+            <p class="mb-4">${psychologyHtml.replace(/\n/g, '<br>')}</p>
+            <h3 class="report-section-title text-indigo-800 text-xl" >Renk ve Form Analizi</h3>
+            <p class="mb-4">${colorAnalysisHtml.replace(/\n/g, '<br>')}</p>
+            <h3 class="report-section-title text-indigo-800 text-xl">Teknik Skorlar</h3>
+            <p class="mb-4 text-sm text-gray-600">${detailHtml}</p>
+            <div class="mt-6 p-3 bg-gray-50 rounded border text-xs text-gray-500">
+                <p><strong>Analiz Bilgileri:</strong> Bu rapor DrawMind AI tarafından ${new Date().toLocaleString('tr-TR')} tarihinde oluşturulmuştur.</p>
+            </div>
+        `;
+        }
+
+        async function runAnalysis() {
+            logDebug('=== ANALİZ BAŞLATILIYOR ===', 'info');
+
+            // Canvas durumunu kontrol et
+            const canvasStats = analyzeCanvasStats();
+            logDebug(`Canvas istatistikleri: ${canvasStats.drawnPixels} çizilmiş piksel, ${canvasStats.uniqueColors} benzersiz renk`, 'info');
+
+            if (canvasStats.drawnPixels < 100) {
+                const errorMsg = `Yetersiz çizim! Lütfen daha fazla çizim yapın. (${canvasStats.drawnPixels} piksel)`;
+                logDebug(errorMsg, 'warning');
+
+                resultCard.innerHTML = `
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p class="text-yellow-700 font-bold">Çizim Yetersiz!</p>
+                        <p class="text-gray-600 text-sm mt-2">${errorMsg}</p>
+                        <p class="text-gray-500 text-xs mt-2">Lütfen canvas'ın en az %5-10'unu dolduracak şekilde çizim yapın.</p>
+                    </div>
+                `;
+                document.getElementById('resultSection').classList.remove('hidden');
+                document.getElementById('drawingSection').classList.add('hidden');
+                return;
+            }
+
+            const base64Url = canvas.toDataURL('image/png');
+            const imageData = base64ToData(base64Url);
+
+            if (!imageData) {
+                logDebug('Base64 veri dönüşümü başarısız', 'error');
+                return;
+            }
+
+            logDebug(`Base64 veri hazır: ${imageData.data.length} karakter`, 'info');
+
+            loadingOverlay.classList.remove('hidden');
+            analysisButton.disabled = true;
+
+            // Analiz durumu metni animasyonun üzerine yazılıyor
+            document.getElementById('analysisStatusText').textContent = "Veriler İşleniyor...";
+            logDebug('Loading overlay gösteriliyor', 'debug');
+
+            try {
+                logDebug(`Backend'e istek gönderiliyor: http://127.0.0.1:8000/analyze`, 'info');
+
+                const startTime = Date.now();
+                const response = await fetch('http://127.0.0.1:8000/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image_data: imageData.data,
+                        timestamp: new Date().toISOString(),
+                        canvas_size: { width: canvas.width, height: canvas.height }
+                    })
+                });
+
+                const responseTime = Date.now() - startTime;
+                logDebug(`Backend cevap süresi: ${responseTime}ms`, 'info');
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText || 'Sunucu hatası'}`);
+                }
+
+                const data = await response.json();
+                logDebug(`Backend'den başarılı yanıt alındı: ${data.emotion}`, 'success');
+
+                renderReport(data);
+                document.getElementById('resultSection').classList.remove('hidden');
+                document.getElementById('drawingSection').classList.add('hidden');
+                logDebug('Sonuç ekranı gösterildi', 'info');
+
+            } catch (err) {
+                logDebug(`Analiz hatası: ${err.message}`, 'error');
+                console.error('Analiz hatası detayı:', err);
+
+                resultCard.innerHTML = `
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p class="text-red-600 font-bold">Analiz sırasında bir hata oluştu!</p>
+                        <p class="text-gray-600 text-sm mt-2">${err.message}</p>
+                        <p class="text-gray-500 text-xs mt-2">Backend URL: http://127.0.0.1:8000/analyze</p>
+                        <div class="mt-3 space-y-2">
+                            <p class="text-xs text-gray-500">Sorun giderme adımları:</p>
+                            <ol class="text-xs text-gray-600 list-decimal pl-4">
+                                <li>Backend'in çalıştığından emin olun</li>
+                                <li>Hızlı Test butonunu deneyin</li>
+                                <li>Console'da (F12) daha fazla detay görebilirsiniz</li>
+                            </ol>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('resultSection').classList.remove('hidden');
+                document.getElementById('drawingSection').classList.add('hidden');
+            } finally {
+                loadingOverlay.classList.add('hidden');
+                analysisButton.disabled = false;
+                document.getElementById('analysisStatusText').textContent = "AI Tarafından Analiz Ediliyor...";
+                logDebug('=== ANALİZ TAMAMLANDI ===', 'info');
+            }
+        }
+
+        function analyzeCanvasStats() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            let drawnPixels = 0;
+            const colorSet = new Set();
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const a = data[i + 3];
+
+                // Beyaz olmayan ve opak pikselleri say
+                if (!(r === 255 && g === 255 && b === 255 && a === 255)) {
+                    drawnPixels++;
+                    colorSet.add(`${r},${g},${b}`);
+                }
+            }
+
+            return {
+                drawnPixels,
+                totalPixels: canvas.width * canvas.height,
+                coverage: ((drawnPixels / (canvas.width * canvas.height)) * 100).toFixed(2),
+                uniqueColors: colorSet.size
+            };
+        }
+
+        // === TEST FONKSİYONLARI ===
+        async function testBackendConnection() {
+            logDebug('Backend bağlantısı test ediliyor...', 'info');
+
+            try {
+                const startTime = Date.now();
+                const response = await fetch('http://127.0.0.1:8000/', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                const responseTime = Date.now() - startTime;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                logDebug(`✅ Backend bağlantı başarılı! (${responseTime}ms)`, 'success');
+
+                // Yeni sayfada alert kullanmak yerine log'a detay ekle
+                logDebug(`Backend Detayı: ${data.message} | Versiyon: ${data.version}`, 'debug');
+
+            } catch (err) {
+                logDebug(`❌ Backend bağlantı hatası: ${err.message}`, 'error');
+            }
+        }
+
+        function runQuickTest() {
+            logDebug('Hızlı test başlatılıyor...', 'info');
+            clearCanvas();
+
+            // Test için basit bir çizim yap
+            const testCtx = canvas.getContext('2d');
+
+            // Büyük kırmızı daire
+            testCtx.fillStyle = '#FF0000';
+            testCtx.beginPath();
+            testCtx.arc(canvas.width / 2, canvas.height / 2, 80, 0, Math.PI * 2);
+            testCtx.fill();
+
+            // Küçük mavi kare
+            testCtx.fillStyle = '#0000FF';
+            testCtx.fillRect(100, 100, 60, 40);
+
+            saveHistory(); // Geçmişe kaydet
+
+            logDebug('Test çizimi yapıldı', 'success');
+
+            // 1 saniye sonra analizi başlat
+            setTimeout(() => {
+                logDebug('Otomatik analiz başlatılıyor...', 'info');
+                runAnalysis();
+            }, 1000);
+        }
+
+        function resetDrawing() {
+            document.getElementById('drawingSection').classList.remove('hidden');
+            document.getElementById('resultSection').classList.add('hidden');
+            clearCanvas();
+            setPenMode(); // Kalem moduna dön
+            logDebug('Yeni çizim için sıfırlandı', 'info');
+        }
+
+        function goHome() {
+            logDebug('Ana sayfaya yönlendiriliyor...', 'info');
+            // index.html'e yönlendir, yoksa uyarı ver
+            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                alert('Zaten anasayfadasınız veya anasayfa dosyası bulunamıyor.');
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // === UYGULAMA BAŞLATMA ===
+        window.onload = () => {
+            logDebug('DrawMind AI Analiz başlatılıyor...', 'info');
+            lucide.createIcons();
+            setCanvasSize();
+            createColorPalette();
+            updateThickness();
+            // Varsayılan olarak kalem modunu aktif et ve ring'i göster
+            setPenMode();
+
+            // Başlangıçta canvas'ı temizle ve geçmişi kaydet
+            clearCanvas();
+
+            // Backend bağlantısını otomatik test et
+            setTimeout(() => {
+                logDebug('Otomatik backend testi başlatılıyor...', 'debug');
+                testBackendConnection();
+            }, 1000);
+
+            logDebug('✅ Uygulama başlatıldı', 'success');
+        };
+
+        // Geliştirici için klavye kısayolları
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+Shift+D: Debug paneli aç/kapa
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                e.preventDefault();
+                toggleDebugPanel();
+                logDebug(`Debug paneli ${debugPanel.classList.contains('hidden') ? 'kapalı' : 'açık'}`, 'info');
+            }
+
+            // Ctrl+Z: Geri al
+            if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
+                e.preventDefault();
+                undo();
+            }
+
+            // Ctrl+Y veya Ctrl+Shift+Z: Yinele
+            if ((e.ctrlKey && e.key === 'y') || (e.ctrlKey && e.shiftKey && e.key === 'Z')) {
+                e.preventDefault();
+                redo();
+            }
+        });
+
+    </script>
+</body>
+
+</html>
